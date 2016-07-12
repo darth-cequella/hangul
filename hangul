@@ -158,27 +158,44 @@ function createIndexHtml {
 <meta name="keywords" content="Set keywords here">
 <meta name="description" content="Site description goes here">
 <meta name="author" content="Author Name">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
 
-<html>
-\t<head>
-\t\t<title>New Project</title>
+<!-- Add to homescreen for Chrome on Android -->
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" sizes="192x192" href="images/android-desktop.png">
 
-\t\t<!-- Angular and Polyfill -->
-\t\t<script src="node_modules/core-js/client/shim.min.js"></script>
-\t\t<script src="node_modules/zone.js/dist/zone.js"></script>
-\t\t<script src="node_modules/reflect-metadata/Reflect.js"></script>
-\t\t<script src="node_modules/systemjs/dist/system.src.js"></script>
-\t\t<script src="systemjs.config.js"></script>
-\t\t<script>
-\t\t\tSystem.import("app").catch(function(err){ console.error(err); });
-\t\t</script>
-\t\t<!-- /Angular and Poyfill -->
-\t</head>
+<!-- Add to homescreen for Safari on iOS -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="PROJECT_NAME">
+<link rel="apple-touch-icon-precomposed" href="images/ios-desktop.png">
 
-\t<body>
-\t\t<h3>Congratulations...<h3>
-\t\t<p>Now,work!!!</p>
-\t</body>
+<!-- Tile icon for Win8 (144x144 + tile color) -->
+<meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+<meta name="msapplication-TileColor" content="#3372DF">
+<link rel="shortcut icon" href="images/favicon.png">
+
+<html lang="pt-br">
+<head>
+\t<title>PROJECT_NAME</title>
+
+\t<!-- Angular and Polyfill -->
+\t<script src="node_modules/core-js/client/shim.min.js"></script>
+\t<script src="node_modules/zone.js/dist/zone.js"></script>
+\t<script src="node_modules/reflect-metadata/Reflect.js"></script>
+\t<script src="node_modules/systemjs/dist/system.src.js"></script>
+\t<script src="systemjs.config.js"></script>
+\t<script>
+\t\tSystem.import("app").catch(function(err){ console.error(err); });
+\t</script>
+\t<!-- /Angular and Poyfill -->
+</head>
+
+<body>
+\t<h3>Congratulations...<h3>
+\t<p>Now,work!!!</p>
+</body>
 
 </html>' > "$INDEX_HTML";
 }
