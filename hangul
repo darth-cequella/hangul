@@ -385,10 +385,6 @@ function editDirective {
 
 if [[ $# > 0 ]]; then
 
-    if [[ $1 == "pwd" || $1 == "teste" ]]; then
-	pwd;
-    fi;
-
     if [[ $1 == "create-component" || $1 == "-cc" ]]; then
 	createComponent $@;
     fi;
