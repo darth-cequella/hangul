@@ -23,7 +23,7 @@ export INDEX_HTML="index.html";
 export MAIN_TS="app/main.ts";
 
 export NPM_MINIMUM_VERSION="3.x.x";
-export NODEJS_MINIMUM_VERSION="v5.x.x";
+export NODEJS_MINIMUM_VERSION="v4.x.x";
 
 export GREATER_THAN=1;
 export LESS_THAN=2;
@@ -32,43 +32,44 @@ export EQUAL=3;
 function createPackageJson {
     printf "\tCreating $OKGREEN'$PACKAGE_JSON'$ENDC...\n"
     printf '{
-\t"name": "angular2-quickstart",
-\t"version": "1.0.0",
-\t"scripts": {
-\t\t"start": "tsc && concurrently \\"npm run tsc:w\\" \\"npm run lite\\" ",
-\t\t"lite": "lite-server",
-\t\t"postinstall": "typings install",
-\t\t"tsc": "tsc",
-\t\t"tsc:w": "tsc -w",
-\t\t"typings": "typings"
-\t},
-\t"license": "ISC",
-\t"dependencies": {
-\t\t"@angular/common":\t"2.0.0-rc.3",
-\t\t"@angular/compiler":\t"2.0.0-rc.3",
-\t\t"@angular/core":\t"2.0.0-rc.3",
-\t\t"@angular/forms": "0.1.1",
-\t\t"@angular/http":\t"2.0.0-rc.3",
-\t\t"@angular/platform-browser":\t"2.0.0-rc.3",
-\t\t"@angular/platform-browser-dynamic":\t"2.0.0-rc.3",
-\t\t"@angular/router":\t"3.0.0-alpha.8",
-\t\t"@angular/router-deprecated":\t"2.0.0-rc.2",
-\t\t"@angular/upgrade":\t"2.0.0-rc.3",
-\t\t"systemjs": "0.19.27",
-\t\t"core-js": "^2.4.0",
-\t\t"reflect-metadata": "^0.1.3",
-\t\t"rxjs": "5.0.0-beta.6",
-\t\t"zone.js": "^0.6.12",
-\t\t"angular2-in-memory-web-api": "0.0.12",
-\t\t"bootstrap": "^3.3.6"
-\t},
-\t"devDependencies": {
-\t\t"concurrently": "^2.0.0",
-\t\t"lite-server": "^2.2.0",
-\t\t"typescript": "^1.8.10",
-\t\t"typings":"^1.0.4"
-\t}
-}\n' > "./$PACKAGE_JSON";
+  "name": "angular2-quickstart",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
+    "lite": "lite-server",
+    "postinstall": "typings install",
+    "tsc": "tsc",
+    "tsc:w": "tsc -w",
+    "typings": "typings"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "@angular/common": "2.0.0-rc.4",
+    "@angular/compiler": "2.0.0-rc.4",
+    "@angular/core": "2.0.0-rc.4",
+    "@angular/forms": "0.2.0",
+    "@angular/http": "2.0.0-rc.4",
+    "@angular/platform-browser": "2.0.0-rc.4",
+    "@angular/platform-browser-dynamic": "2.0.0-rc.4",
+    "@angular/router": "3.0.0-beta.1",
+    "@angular/router-deprecated": "2.0.0-rc.2",
+    "@angular/upgrade": "2.0.0-rc.4",
+    "systemjs": "0.19.27",
+    "core-js": "^2.4.0",
+    "reflect-metadata": "^0.1.3",
+    "rxjs": "5.0.0-beta.6",
+    "zone.js": "^0.6.12",
+    "angular2-in-memory-web-api": "0.0.14",
+    "bootstrap": "^3.3.6"
+  },
+  "devDependencies": {
+    "concurrently": "^2.0.0",
+    "lite-server": "^2.2.0",
+    "typescript": "^1.8.10",
+    "typings":"^1.0.4"
+  }
+}
+\n' > "./$PACKAGE_JSON";
 }
 
 function createTypingsJson {
@@ -89,49 +90,50 @@ function createSystemjsConfigJS {
  * Adjust as necessary for your application needs.
  */
 (function(global) {
-\t// map tells the System loader where to look for things
-\tvar map = {
-\t\t'app':\t\t\t\t\t\t\t\t\t\t\t\t'app', // 'dist',
-\t\t'@angular':\t\t\t\t\t\t\t\t\t 'node_modules/@angular',
-\t\t'angular2-in-memory-web-api': 'node_modules/angular2-in-memory-web-api',
-\t\t'rxjs':\t\t\t\t\t\t\t\t\t\t\t 'node_modules/rxjs'
-\t};
-\t// packages tells the System loader how to load when no filename and/or no extension
-\tvar packages = {
-\t\t'app':\t\t\t\t\t\t\t\t\t\t\t\t{ main: 'main.js',\tdefaultExtension: 'js' },
-\t\t'rxjs':\t\t\t\t\t\t\t\t\t\t\t { defaultExtension: 'js' },
-\t\t'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' },
-\t};
-\tvar ngPackageNames = [
-\t\t'common',
-\t\t'compiler',
-\t\t'core',
-\t\t'forms',
-\t\t'http',
-\t\t'platform-browser',
-\t\t'platform-browser-dynamic',
-\t\t'router',
-\t\t'router-deprecated',
-\t\t'upgrade',
-\t];
-\t// Individual files (~300 requests):
-\tfunction packIndex(pkgName) {
-\t\tpackages['@angular/'+pkgName] = { main: 'index.js', defaultExtension: 'js' };
-\t}
-\t// Bundled (~40 requests):
-\tfunction packUmd(pkgName) {
-\t\tpackages['@angular/'+pkgName] = { main: '/bundles/' + pkgName + '.umd.js', defaultExtension: 'js' };
-\t}
-\t// Most environments should use UMD; some (Karma) need the individual index files
-\tvar setPackageConfig = System.packageWithIndex ? packIndex : packUmd;
-\t// Add package entries for angular packages
-\tngPackageNames.forEach(setPackageConfig);
-\tvar config = {
-\t\tmap: map,
-\t\tpackages: packages
-\t};
-\tSystem.config(config);
-})(this);\n" > "$SYSTEMJS_CONFIG_JS";
+  // map tells the System loader where to look for things
+  var map = {
+    'app':                        'app', // 'dist',
+    '@angular':                   'node_modules/@angular',
+    'angular2-in-memory-web-api': 'node_modules/angular2-in-memory-web-api',
+    'rxjs':                       'node_modules/rxjs'
+  };
+  // packages tells the System loader how to load when no filename and/or no extension
+  var packages = {
+    'app':                        { main: 'main.js',  defaultExtension: 'js' },
+    'rxjs':                       { defaultExtension: 'js' },
+    'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' },
+  };
+  var ngPackageNames = [
+    'common',
+    'compiler',
+    'core',
+    'forms',
+    'http',
+    'platform-browser',
+    'platform-browser-dynamic',
+    'router',
+    'router-deprecated',
+    'upgrade',
+  ];
+  // Individual files (~300 requests):
+  function packIndex(pkgName) {
+    packages['@angular/'+pkgName] = { main: 'index.js', defaultExtension: 'js' };
+  }
+  // Bundled (~40 requests):
+  function packUmd(pkgName) {
+    packages['@angular/'+pkgName] = { main: '/bundles/' + pkgName + '.umd.js', defaultExtension: 'js' };
+  }
+  // Most environments should use UMD; some (Karma) need the individual index files
+  var setPackageConfig = System.packageWithIndex ? packIndex : packUmd;
+  // Add package entries for angular packages
+  ngPackageNames.forEach(setPackageConfig);
+  var config = {
+    map: map,
+    packages: packages
+  };
+  System.config(config);
+})(this);
+\n" > "$SYSTEMJS_CONFIG_JS";
 }
 
 function createTsconfigJson {
