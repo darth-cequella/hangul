@@ -1,0 +1,440 @@
+#!/bin/bash
+
+export HEADER='\033[95m';
+export OKBLUE='\033[94m';
+export OKGREEN='\033[92m';
+export WARNING='\033[93m';
+export FAIL='\033[91m';
+export ENDC='\033[0m';
+export BOLD='\033[1m';
+export UNDERLINE='\033[4m';
+
+export COMPONENT_TS=".component.ts";
+export COMPONENT_HTML=".component.html";
+export COMPONENT_CSS=".component.css";
+
+export DIRECTIVE_TS=".directive.ts"
+
+export PACKAGE_JSON="package.json";
+export TYPINGS_JSON="typings.json";
+export SYSTEMJS_CONFIG_JS="systemjs.config.js";
+export TSCONFIG_JSON="tsconfig.json";
+export INDEX_HTML="index.html";
+export MAIN_TS="app/main.ts";
+
+export NPM_MINIMUM_VERSION="3.x.x";
+export NODEJS_MINIMUM_VERSION="v5.x.x";
+
+export GREATER_THAN=1;
+export LESS_THAN=2;
+export EQUAL=3;
+
+function createPackageJson {
+    printf "\tCreating $OKGREEN'$PACKAGE_JSON'$ENDC...\n"
+    printf '{
+\t"name": "angular2-quickstart",
+\t"version": "1.0.0",
+\t"scripts": {
+\t\t"start": "tsc && concurrently \\"npm run tsc:w\\" \\"npm run lite\\" ",
+\t\t"lite": "lite-server",
+\t\t"postinstall": "typings install",
+\t\t"tsc": "tsc",
+\t\t"tsc:w": "tsc -w",
+\t\t"typings": "typings"
+\t},
+\t"license": "ISC",
+\t"dependencies": {
+\t\t"@angular/common":\t"2.0.0-rc.3",
+\t\t"@angular/compiler":\t"2.0.0-rc.3",
+\t\t"@angular/core":\t"2.0.0-rc.3",
+\t\t"@angular/forms": "0.1.1",
+\t\t"@angular/http":\t"2.0.0-rc.3",
+\t\t"@angular/platform-browser":\t"2.0.0-rc.3",
+\t\t"@angular/platform-browser-dynamic":\t"2.0.0-rc.3",
+\t\t"@angular/router":\t"3.0.0-alpha.8",
+\t\t"@angular/router-deprecated":\t"2.0.0-rc.2",
+\t\t"@angular/upgrade":\t"2.0.0-rc.3",
+\t\t"systemjs": "0.19.27",
+\t\t"core-js": "^2.4.0",
+\t\t"reflect-metadata": "^0.1.3",
+\t\t"rxjs": "5.0.0-beta.6",
+\t\t"zone.js": "^0.6.12",
+\t\t"angular2-in-memory-web-api": "0.0.12",
+\t\t"bootstrap": "^3.3.6"
+\t},
+\t"devDependencies": {
+\t\t"concurrently": "^2.0.0",
+\t\t"lite-server": "^2.2.0",
+\t\t"typescript": "^1.8.10",
+\t\t"typings":"^1.0.4"
+\t}
+}\n' > "./$PACKAGE_JSON";
+}
+
+function createTypingsJson {
+    printf "\tCreating $OKGREEN'$TYPINGS_JSON'$ENDC...\n"
+    printf '{
+\t"globalDependencies": {
+\t\t"core-js": "registry:dt/core-js#0.0.0+20160602141332",
+\t\t"jasmine": "registry:dt/jasmine#2.2.0+20160621224255",
+\t\t"node": "registry:dt/node#6.0.0+20160621231320"
+\t}
+}\n' > "./$TYPINGS_JSON";
+}
+
+function createSystemjsConfigJS {
+    printf "\tCreating '$OKGREEN$SYSTEMJS_CONFIG_JS$ENDC'...\n";
+    printf "/**
+ * System configuration for Angular 2 samples
+ * Adjust as necessary for your application needs.
+ */
+(function(global) {
+\t// map tells the System loader where to look for things
+\tvar map = {
+\t\t'app':\t\t\t\t\t\t\t\t\t\t\t\t'app', // 'dist',
+\t\t'@angular':\t\t\t\t\t\t\t\t\t 'node_modules/@angular',
+\t\t'angular2-in-memory-web-api': 'node_modules/angular2-in-memory-web-api',
+\t\t'rxjs':\t\t\t\t\t\t\t\t\t\t\t 'node_modules/rxjs'
+\t};
+\t// packages tells the System loader how to load when no filename and/or no extension
+\tvar packages = {
+\t\t'app':\t\t\t\t\t\t\t\t\t\t\t\t{ main: 'main.js',\tdefaultExtension: 'js' },
+\t\t'rxjs':\t\t\t\t\t\t\t\t\t\t\t { defaultExtension: 'js' },
+\t\t'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' },
+\t};
+\tvar ngPackageNames = [
+\t\t'common',
+\t\t'compiler',
+\t\t'core',
+\t\t'forms',
+\t\t'http',
+\t\t'platform-browser',
+\t\t'platform-browser-dynamic',
+\t\t'router',
+\t\t'router-deprecated',
+\t\t'upgrade',
+\t];
+\t// Individual files (~300 requests):
+\tfunction packIndex(pkgName) {
+\t\tpackages['@angular/'+pkgName] = { main: 'index.js', defaultExtension: 'js' };
+\t}
+\t// Bundled (~40 requests):
+\tfunction packUmd(pkgName) {
+\t\tpackages['@angular/'+pkgName] = { main: '/bundles/' + pkgName + '.umd.js', defaultExtension: 'js' };
+\t}
+\t// Most environments should use UMD; some (Karma) need the individual index files
+\tvar setPackageConfig = System.packageWithIndex ? packIndex : packUmd;
+\t// Add package entries for angular packages
+\tngPackageNames.forEach(setPackageConfig);
+\tvar config = {
+\t\tmap: map,
+\t\tpackages: packages
+\t};
+\tSystem.config(config);
+})(this);\n" > "$SYSTEMJS_CONFIG_JS";
+}
+
+function createTsconfigJson {
+    printf "\tCreating $OKGREEN'$TSCONFIG_JSON'$ENDC...\n"
+    printf '{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "removeComments": false,
+    "noImplicitAny": false
+  }
+}\n' > "$TSCONFIG_JSON";
+}
+
+function createIndexHtml {
+    printf "\tCreating '$OKGREEN$INDEX_HTML$ENDC'...\n";
+    printf '<!DOCTYPE html>
+
+<meta charset="UTF-8">
+<meta name="keywords" content="Set keywords here">
+<meta name="description" content="Site description goes here">
+<meta name="author" content="Author Name">
+
+<html>
+\t<head>
+\t\t<title>New Project</title>
+
+\t\t<!-- Angular and Polyfill -->
+\t\t<script src="node_modules/core-js/client/shim.min.js"></script>
+\t\t<script src="node_modules/zone.js/dist/zone.js"></script>
+\t\t<script src="node_modules/reflect-metadata/Reflect.js"></script>
+\t\t<script src="node_modules/systemjs/dist/system.src.js"></script>
+\t\t<script src="systemjs.config.js"></script>
+\t\t<script>
+\t\t\tSystem.import("app").catch(function(err){ console.error(err); });
+\t\t</script>
+\t\t<!-- /Angular and Poyfill -->
+\t</head>
+
+\t<body>
+\t\t<h3>Congratulations...<h3>
+\t\t<p>Now,work!!!</p>
+\t</body>
+
+</html>' > "$INDEX_HTML";
+}
+
+function createMainTs {
+    mkdir "app";
+    printf "\tCreating '$OKGREEN$MAIN_TS$ENDC'...\n";
+    printf "import {bootstrap} from '@angular/platform-browser-dynamic';
+
+//bootstrap(Category); Edit this!\n" > "$MAIN_TS";
+
+}
+
+function installAmbient {
+    printf "\n\n\tCreating ambient to$OKGREEN Angular2Js$ENDC development\n";
+    npm install;
+
+    if [[ $? == 0 ]]; then
+	return $?;
+    else
+	printf "\n\n\t$FAIL-Error on crreation ok ambient to Angular2Js development!!!$ENDC\n\n";	
+    fi;
+}
+
+function startNewProject {
+    mkdir "$1";
+    cd "$1";
+    printf "\n";
+
+    isNodejsAvailable;
+    if [[ $? -eq 0 ]]; then
+	isNpmAvailable;
+	if [[ $? -eq 0 ]]; then
+
+	    printf "\n";
+	    createPackageJson;
+	    createTypingsJson;
+	    createSystemjsConfigJS;
+	    createTsconfigJson;
+	    createIndexHtml;
+	    createMainTs;
+	    installAmbient;
+	    
+	    if [[ $? -ne 1 ]]; then
+		printf "\n\n\n\tNow use $OKGREEN'npm start'$ENDC to start work\n\n";
+	    fi;
+
+	fi;
+
+    fi;
+
+}
+
+function compareVersions (){
+    typeset    IFS='.'
+    typeset -a v1=( $1 )
+    typeset -a v2=( $2 )
+    typeset    n diff
+
+    for (( n=0; n<4; n+=1 )); do
+	diff=$((v1[n]-v2[n]));
+	if [ $diff -ne 0 ] ; then
+	    if [ $diff -le 0 ]; then
+		return $GREATER_THAN;
+	    else 
+		return $LESS_THAN;
+	    fi;
+	fi;
+    done
+    return $EQUAL;
+}
+
+function isNpmAvailable {
+    if command -v npm>/dev/null; then
+	version=`npm -v`;
+	
+	compareVersions $NPM_MINIMUM_VERSION $version;
+	if [[ $? -ne $LESS_THAN ]];then
+	    printf "\t$OKGREEN-NPM($version) OK!$ENDC\n";
+	    return 0;
+	else
+	    printf "\t$WARNING-NPM($version), minimum version is $NPM_MINIMUM_VERSION.$ENDC\n";
+	    return 1;
+	fi;
+    else
+	printf "\t$FAIL-Error: NPM not found.$ENDC\n"
+	return 1;
+    fi;
+}
+
+function isNodejsAvailable {
+    if command -v node>/dev/null; then
+	version=`node -v`;
+
+	compareVersions $NODEJS_MINIMUM_VERSION $version;
+	if [[ $? -ne $LESS_THAN ]];then
+	    printf "\t$OKGREEN-NodeJs($version) OK!$ENDC\n";
+	    return 0;
+	else
+	    printf "\t$WARNING-NodeJs($version), minimum version is $NODEJS_MINIMUM_VERSION.$ENDC\n";
+	    return 1;
+	fi;
+    else
+	printf "\t$FAIL-Error: NodeJs not found.$ENDC\n"
+	return 1;
+    fi;
+}
+
+function createComponent {
+    selectorName="";
+    className="";
+
+    if [[ $# < 3 ]]; then
+	printf "\nType a 'selector' name: ";
+	read selectorName;
+	printf "Type a 'class' name: ";
+	read className;
+    else
+	selectorName=$2;
+	className=$3;
+    fi;
+
+    printf "\n\tCreating component: $OKGREEN$selectorName$ENDC\n\n";
+
+    #Create .ts
+    printf "import {Component} from '@angular/core'
+
+@Component({
+\tselector: '$selectorName',
+\tmoduleId: module.id,
+\ttemplateUrl: './$selectorName$COMPONENT_HTML',
+\tstyleUrls: ['./$selectorName$COMPONENT_CSS']
+})
+
+export class $className {
+}\n" > "./app/$selectorName$COMPONENT_TS";
+
+    #Create .html
+    printf "<p>Component $className created!</p>\n" > "./app/$selectorName$COMPONENT_HTML";
+
+    #Create .css
+    printf "/*TODO*/\n" > "./app/$selectorName$COMPONENT_CSS";
+}
+
+function editComponent {
+    printf "\n\tEditing '$OKGREEN$1$ENDC' component...\n";
+
+    `emacs --load ~/.emacs.d/lisp/TypeScript.el --file app/$1$COMPONENT_CSS app/$1$COMPONENT_HTML app/$1$COMPONENT_TS`;
+
+    if [[ $? == 0 ]];then
+	printf "\t'$OKGREEN$1$ENDC' sucessfully edited.\n\n";
+    fi;
+}
+
+function removeComponent {
+    printf "\n\tRemoving '$OKGREEN$1$ENDC' component...\n";
+    eval 'rm ./app/$1.component.*';
+    printf "\t'$OKGREEN$1$ENDC' sucefully removed...\n";
+    printf "\tRemember to remove all references to '$OKGREEN$1$ENDC' of your project.\n\n";
+}
+
+function openProject {
+    eval 'emacs --load ~/.emacs.d/lisp/TypeScript.el --file ./index.html &';
+}
+
+function createDirective {
+    selectorName="";
+    className="";
+
+    if [[ $# < 3 ]]; then
+	printf "\nType a 'selector' name: ";
+	read selectorName;
+	printf "Type a 'class' name: ";
+	read className;
+    else
+	selectorName=$2;
+	className=$3;
+    fi;
+
+    printf "\n\tCreating directive: $OKGREEN$selectorName$ENDC\n\n";
+
+    #Create .ts
+    printf "import {Directive} from '@angular/core'
+
+@Directive({
+\tselector: '[$selectorName]',
+})
+
+export class $className {
+}\n" > "./app/$selectorName$DIRECTIVE_TS";
+}
+
+function editDirective {
+    printf "\n\tEditing '$OKGREEN$1$ENDC' directive...\n";
+
+    `emacs --load ~/.emacs.d/lisp/TypeScript.el --file app/$1$DIRECTIVE_TS`;
+
+    if [[ $? == 0 ]];then
+	printf "\t'$OKGREEN$1$ENDC' sucessfully edited.\n\n";
+    fi;
+}
+
+#---------------------------------------------------------------------------
+
+if [[ $# > 0 ]]; then
+
+    if [[ $1 == "pwd" || $1 == "teste" ]]; then
+	pwd;
+    fi;
+
+    if [[ $1 == "create-component" || $1 == "-cc" ]]; then
+	createComponent $@;
+    fi;
+
+    if [[ $1 == "edit-component" || $1 == "-ec" ]]; then
+	if [[ $# == 2 ]]; then
+	    editComponent $2;
+	else
+	    printf "\n\tPlease indicate the component to edit. (use selector name)\n\n";
+	fi;
+    fi;
+
+    if [[ $1 == "remove-component" || $1 == "-rc" ]]; then
+	if [[ $# == 2 ]]; then
+	    removeComponent $2;
+	else
+	    printf "\n\tPlease indicate the component to edit. (use selector name)\n\n";
+	fi;
+    fi;
+
+    if [[ $1 == "new-project" || $1 == "-np" ]]; then
+	if [[ $# == 2 ]]; then
+	    startNewProject $2;
+	else
+	    printf "\n\tPlease indicate a name to the project.\n\n";
+	fi;
+    fi;
+
+    if [[ $1 == "install-ambient" ]]; then
+	installAmbient;
+    fi;
+
+    if [[ $1 == "open-project" ]]; then
+	openProject;
+    fi;
+
+    if [[ $1 == "create-directive" || $1 == "-cd" ]]; then
+	createDirective $@;
+    fi;
+
+    if [[ $1 == "edit-directive" || $1 == "-ed" ]]; then
+	if [[ $# == 2 ]];then
+	    editDirective $2;
+	else
+	    printf "\n\tPlease the directive selector.\n\n";
+	fi;
+    fi;
+
+fi;
