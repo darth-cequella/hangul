@@ -287,6 +287,16 @@ function isNodejsAvailable {
     fi;
 }
 
+function isEmacsAvailable {
+    if command -v emacs>/dev/null; then
+	printf "\t$OKGREEN-Emacs OK!$ENDC\n";
+	return 0;
+    else
+	printf "\t$FAIL-Error: NodeJs not found.$ENDC\n"
+	return 1;
+    fi;
+}
+
 function createComponent {
     selectorName="";
     className="";
