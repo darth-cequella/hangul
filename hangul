@@ -194,7 +194,7 @@ function createIndexHtml {
 </head>
 
 <body>
-\t<h3>Congratulations...<h3>
+\t<h3>Congratulations...</h3>
 \t<p>Now,work!!!</p>
 </body>
 
